@@ -1,20 +1,43 @@
 <!DOCTYPE html>
 <html>
 <title>not wtf</title>
-<script async src="https://inform.everyone.wtf/legal.min.js" data-site-id="e95d3756-4c3d-41e5-9c42-70addf110716"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
     div.center {
         position: fixed;
         top: 50%;
         left: 50%;
-        /* bring your own prefixes */
         transform: translate(-50%, -50%);
     }
 
-    h3 {
+    div.center h3 {
         font-weight: 100;
-        font-family: monospace; 
+        font-family: monospace;
+    }
+
+    div.center span {
+        position: absolute;
+        transition: opacity 2s;
+    }
+
+    footer {
+        font-size: small;
+
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    footer, footer a {
+        color: gray;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background: black;
+            color: white;
+        }
     }
 </style>
 
@@ -22,8 +45,57 @@
     <div class="center">
         <h1>Not WTF</h1>
         <h2>Don't say wtf, take a walk instead. </h2>
-        <h3>Also, we should put something more useful here.</h3>
+        <h3>
+            <span>Also, we should put something more useful here. </span>
+            <span style='opacity: 0;'></span>
+        </h3>
     </div>
+
+    <ul style="display: none">
+        <li>Meckern geht immer, aber &auml;ndert nichts. </li>
+        <li>Your Ad Here</li>
+        <li>Why not Zoidberg?</li>
+    </ul>
+
+    <script type="text/javascript">
+        var ul = document.getElementsByTagName('ul')[0];
+        var h3 = document.getElementsByTagName('h3')[0];
+
+        var oldText = h3.textContent;
+        var newText = oldText;
+
+        var texts = [oldText];
+        for (var i = 0; i < ul.children.length; i++) {
+            texts.push(ul.children[i].textContent);
+        }
+
+        var tempSpan;
+        var activeSpan = document.getElementsByTagName('span')[0];
+        var passiveSpan = document.getElementsByTagName('span')[1];
+
+        var updateText  = function updateText() {
+            tempSpan = activeSpan;
+            activeSpan = passiveSpan;
+            passiveSpan = tempSpan;
+
+            while (oldText == newText) {
+                newText = texts[Math.floor(Math.random()*texts.length)];
+            }
+            oldText = newText;
+
+            activeSpan.innerHTML = '';
+            activeSpan.appendChild(document.createTextNode(newText));
+
+            activeSpan.style.opacity = 1;
+            passiveSpan.style.opacity = 0;
+        }
+
+        setInterval(updateText, 10000);
+    </script>
+
+    <footer>
+        <script src="https://inform.everyone.wtf/legal.min.js" data-site-id="e95d3756-4c3d-41e5-9c42-70addf110716"></script>
+    </footer>
 </body>
 
 </html>
