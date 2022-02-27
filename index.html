@@ -86,15 +86,38 @@
             activeSpan = passiveSpan;
             passiveSpan = tempSpan;
 
+            // setup the new span
             activeSpan.innerHTML = newText;
             activeSpan.style.opacity = 1;
             activeSpan.style.zIndex = 1;
 
+            // kill the old span
             passiveSpan.style.opacity = 0;
             activeSpan.style.zIndex = 0;
         }
 
-        setInterval(updateText, 10000);
+        var timer = null;
+        var resetTimer = function() {
+            // clear the old interval (if any)
+            if (timer !== null) {
+                clearInterval(timer);
+                timer = null;
+            }
+
+            // and setup a new one
+            timer = setInterval(updateText, 10000);
+        }
+        resetTimer();
+
+        // handle clicks anywhere
+        window.addEventListener('click', function(event){
+            if (event.which === 3 || event.button === 2) { // right mouse button
+                return;
+            }
+
+            updateText();
+            resetTimer();
+        });
     </script>
 
     <footer>
