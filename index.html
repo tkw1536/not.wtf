@@ -4,19 +4,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-    div.center {
+    main.center {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 
-    div.center h3 {
+    main.center h3 {
         font-weight: 100;
         font-family: monospace;
     }
 
-    div.center span {
+    main.center span {
         position: absolute;
         transition: opacity 2s;
     }
@@ -42,52 +42,56 @@
 </style>
 
 <body>
-    <div class="center">
+    <main class="center">
         <h1>Not WTF</h1>
         <h2>Don't say wtf, take a walk instead. </h2>
         <h3>
-            <span>Also, we should put something more useful here. </span>
-            <span style='opacity: 0;'></span>
+            <span style="z-index: 1;">Also, we should put something more useful here. </span>
+            <span style='opacity: 0; z-index: 0;'></span>
         </h3>
-    </div>
+    </main>
 
     <ul style="display: none">
         <li>Meckern geht immer, aber &auml;ndert nichts. </li>
         <li>Your Ad Here</li>
         <li>Why not Zoidberg?</li>
+        <li>If you say <q>News are literally killing my emotions at this point</q>, it might be worthwile to consider not consuming them anymore.</li>
     </ul>
 
     <script type="text/javascript">
         var ul = document.getElementsByTagName('ul')[0];
         var h3 = document.getElementsByTagName('h3')[0];
 
-        var oldText = h3.textContent;
-        var newText = oldText;
-
-        var texts = [oldText];
-        for (var i = 0; i < ul.children.length; i++) {
-            texts.push(ul.children[i].textContent);
-        }
-
         var tempSpan;
         var activeSpan = document.getElementsByTagName('span')[0];
         var passiveSpan = document.getElementsByTagName('span')[1];
 
-        var updateText  = function updateText() {
-            tempSpan = activeSpan;
-            activeSpan = passiveSpan;
-            passiveSpan = tempSpan;
+        var oldText = activeSpan.innerHTML;
+        var newText = oldText;
 
+        var texts = [oldText];
+        for (var i = 0; i < ul.children.length; i++) {
+            texts.push(ul.children[i].innerHTML);
+        }
+
+        var updateText = function updateText() {
+            // determine new text
             while (oldText == newText) {
                 newText = texts[Math.floor(Math.random()*texts.length)];
             }
             oldText = newText;
 
-            activeSpan.innerHTML = '';
-            activeSpan.appendChild(document.createTextNode(newText));
+            // flip the spans
+            tempSpan = activeSpan;
+            activeSpan = passiveSpan;
+            passiveSpan = tempSpan;
 
+            activeSpan.innerHTML = newText;
             activeSpan.style.opacity = 1;
+            activeSpan.style.zIndex = 1;
+
             passiveSpan.style.opacity = 0;
+            activeSpan.style.zIndex = 0;
         }
 
         setInterval(updateText, 10000);
